@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Untuk Kamu, Sayang 💌</title>
+
+<style>
+  :root{
+    --pink-pastel:#ffd6e8;
+    --pink-soft:#ffeef4;
+    --merah-hati:#e0577e;
+    --merah-tua:#c23b60;
+    --cream:#fff8f3;
+    --putih:#ffffff;
+    --text-dark:#5a3548;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  html,body{
+    width:100%;
+    overflow-x:hidden;
+    background:linear-gradient(160deg, var(--pink-soft), var(--cream));
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color:var(--text-dark);
+  }
+
+  body{ min-height:100vh; position:relative; }
+
+  /* ---------- Falling hearts / petals ---------- */
+  .falling{
+    position:fixed;
+    top:-10%;
+    z-index:5;
+    pointer-events:none;
+    user-select:none;
+    animation:fall linear infinite;
+    opacity:0.8;
+  }
+  @keyframes fall{
+    0%{ transform:translateY(0) rotate(0deg); opacity:0.9;}
+    100%{ transform:translateY(110vh) rotate(360deg); opacity:0.4;}
+  }
+
+  /* ---------- Section container ---------- */
+  .section{
+    width:100%;
+    min-height:100vh;
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:24px 18px;
+    text-align:center;
+    position:relative;
+    z-index:10;
+  }
+  .section.active{ display:flex; }
+
+  /* ---------- LOGIN (Password Gate) ---------- */
+  #login{ gap:14px; }
+
+  .login-box{
+    background:var(--putih);
+    border-radius:20px;
+    padding:34px 26px;
+    max-width:340px;
+    width:100%;
+    text-align:center;
+    box-shadow:0 15px 40px rgba(224,87,126,0.2);
+    border:1px solid var(--pink-pastel);
+  }
+  .login-box .emoji{ font-size:2.6rem; margin-bottom:10px; }
+  .login-box h1{ font-size:1.2rem; color:var(--merah-tua); margin-bottom:6px; }
+  .login-box p{ font-size:0.9rem; opacity:0.8; margin-bottom:20px; }
+  .login-box input[type="password"]{
+    width:100%;
+    padding:13px 16px;
+    border-radius:50px;
+    border:2px solid var(--pink-pastel);
+    outline:none;
+    font-size:1rem;
+    text-align:center;
+    margin-bottom:14px;
+  }
+  .login-box input[type="password"]:focus{ border-color:var(--merah-hati); }
+  .login-box button{
+    width:100%;
+    border:none;
+    padding:14px;
+    border-radius:50px;
+    font-weight:700;
+    font-size:1rem;
+    color:#fff;
+    background:linear-gradient(135deg, var(--merah-hati), var(--merah-tua));
+    cursor:pointer;
+    box-shadow:0 8px 20px rgba(194,59,96,0.3);
+  }
+  .error-msg{
+    color:var(--merah-tua);
+    font-size:0.85rem;
+    margin-bottom:12px;
+    font-weight:600;
+    display:none;
+  }
+  .error-msg.show{ display:block; }
+
+  /* ---------- COVER (Amplop) ---------- */
+  #cover{ gap:20px; }
+
+  .envelope-wrap{
+    width:min(280px, 80vw);
+    perspective:1000px;
+    cursor:pointer;
+  }
+
+  .envelope{
+    width:100%;
+    height:180px;
+    background:linear-gradient(135deg, var(--merah-hati), var(--merah-tua));
+    border-radius:10px;
+    position:relative;
+    box-shadow:0 15px 35px rgba(194,59,96,0.35);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    animation:pulse 2.2s ease-in-out infinite;
+  }
+
+  @keyframes pulse{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.03); }
+  }
+
+  .envelope::before{
+    content:"";
+    position:absolute;
+    top:0; left:0;
+    width:0; height:0;
+    border-left:140px solid transparent;
+    border-right:140px solid transparent;
+    border-top:90px solid var(--merah-tua);
+    filter:brightness(1.1);
+  }
+
+  .envelope .heart-seal{
+    font-size:2.4rem;
+    z-index:2;
+    animation:beat 1.2s ease-in-out infinite;
+  }
+
+  @keyframes beat{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.15); }
+  }
+
+  .cover-text{
+    font-size:1.05rem;
+    color:var(--text-dark);
+    max-width:320px;
+    line-height:1.5;
+  }
+
+  .btn{
+    border:none;
+    outline:none;
+    padding:14px 34px;
+    font-size:1rem;
+    font-weight:600;
+    border-radius:50px;
+    background:linear-gradient(135deg, var(--merah-hati), var(--merah-tua));
+    color:#fff;
+    cursor:pointer;
+    box-shadow:0 8px 20px rgba(194,59,96,0.35);
+    transition:transform 0.2s ease;
+  }
+  .btn:active{ transform:scale(0.95); }
+
+  /* ---------- SURAT ---------- */
+  #surat{ gap:18px; }
+
+  .surat-box{
+    background:var(--putih);
+    border-radius:18px;
+    padding:28px 22px;
+    max-width:420px;
+    width:100%;
+    box-shadow:0 10px 30px rgba(224,87,126,0.18);
+    border:1px solid var(--pink-pastel);
+  }
+
+  .surat-title{
+    font-size:1.3rem;
+    color:var(--merah-tua);
+    margin-bottom:14px;
+    font-weight:700;
+  }
+
+  #typedText{
+    font-size:1rem;
+    line-height:1.7;
+    color:var(--text-dark);
+    text-align:left;
+    min-height:180px;
+    white-space:pre-wrap;
+  }
+
+  .cursor{
+    display:inline-block;
+    width:2px;
+    background:var(--merah-hati);
+    margin-left:2px;
+    animation:blink 0.8s steps(1) infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  /* ---------- GALERI ---------- */
+  #galeri{ gap:16px; }
+
+  .galeri-title{
+    font-size:1.3rem;
+    color:var(--merah-tua);
+    font-weight:700;
+    margin-bottom:6px;
+  }
+
+  .carousel{
+    width:100%;
+    max-width:420px;
+    overflow-x:auto;
+    display:flex;
+    gap:14px;
+    padding:14px 6px 20px 6px;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .carousel::-webkit-scrollbar{ height:6px; }
+  .carousel::-webkit-scrollbar-thumb{ background:var(--pink-pastel); border-radius:10px; }
+
+  .card{
+    scroll-snap-align:center;
+    flex:0 0 78%;
+    background:var(--putih);
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 8px 22px rgba(224,87,126,0.18);
+    border:1px solid var(--pink-pastel);
+  }
+
+  .card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    display:block;
+    background:linear-gradient(135deg,var(--pink-pastel),var(--pink-soft));
+  }
+
+  .card-caption{
+    padding:12px 14px;
+    text-align:left;
+  }
+
+  .card-caption .tgl{
+    font-size:0.75rem;
+    color:var(--merah-hati);
+    font-weight:600;
+    letter-spacing:0.3px;
+  }
+
+  .card-caption .cap{
+    font-size:0.9rem;
+    margin-top:4px;
+    color:var(--text-dark);
+  }
+
+  .lanjut-btn{ margin-top:10px; }
+
+  /* ---------- INTERAKSI AKHIR ---------- */
+  #akhir{ gap:22px; }
+
+  .pertanyaan{
+    font-size:1.25rem;
+    font-weight:700;
+    color:var(--merah-tua);
+    max-width:320px;
+  }
+
+  .tombol-area{
+    position:relative;
+    width:min(320px, 85vw);
+    height:160px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:20px;
+  }
+
+  #btnYa, #btnTidak{
+    padding:14px 30px;
+    border-radius:50px;
+    font-weight:700;
+    font-size:1rem;
+    border:none;
+    cursor:pointer;
+    transition:transform 0.15s ease, top 0.25s ease, left 0.25s ease;
+  }
+
+  #btnYa{
+    background:linear-gradient(135deg,var(--merah-hati),var(--merah-tua));
+    color:#fff;
+    box-shadow:0 8px 20px rgba(194,59,96,0.35);
+  }
+
+  #btnTidak{
+    background:var(--putih);
+    color:var(--merah-hati);
+    border:2px solid var(--pink-pastel);
+    position:relative;
+  }
+
+  #btnTidak.escaping{
+    position:absolute;
+  }
+
+  /* ---------- Popup bahagia ---------- */
+  #popup{
+    position:fixed;
+    inset:0;
+    background:rgba(90,53,72,0.55);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+    padding:20px;
+  }
+  #popup.show{ display:flex; }
+
+  .popup-box{
+    background:var(--putih);
+    border-radius:20px;
+    padding:30px 26px;
+    max-width:320px;
+    text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,0.25);
+  }
+
+  .popup-box .emoji{ font-size:3rem; }
+  .popup-box h2{ color:var(--merah-tua); margin:12px 0 8px; }
+  .popup-box p{ font-size:0.95rem; line-height:1.5; color:var(--text-dark); }
+
+  canvas#confettiCanvas{
+    position:fixed;
+    inset:0;
+    z-index:200;
+    pointer-events:none;
+  }
+
+  footer{
+    font-size:0.75rem;
+    color:var(--merah-hati);
+    opacity:0.6;
+    margin-top:20px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Audio latar -->
+<audio id="bgMusic" src="penjagahati.mp3" loop preload="none"></audio>
+
+<!-- ================= LOGIN (Password Gate) ================= -->
+<section id="login" class="section active">
+  <div class="login-box">
+    <div class="emoji">🔒💌</div>
+    <h1>Hallo Maura Nurhalimah</h1>
+    <p>kamu masih inget kan tanggal jadian kita? tulis dibawah yaaaa cantikkk</p>
+    <div class="error-msg" id="loginError">Password salah, tahunnya pake 2025 ya sayang</div>
+    <form id="loginForm">
+      <input type="password" id="sandiInput" placeholder="cuma angkanya yaa" autofocus required>
+      <button type="submit">Buka 💗</button>
+    </form>
+  </div>
+</section>
+
+<!-- ================= COVER ================= -->
+<section id="cover" class="section">
+  <div class="envelope-wrap" id="envelopeBtn">
+    <div class="envelope">
+      <div class="heart-seal">💌</div>
+    </div>
+  </div>
+  <p class="cover-text">Sebuah pesan penting untukmu...<br>buka sekarang ya 🌸</p>
+  <button class="btn" id="btnBuka">Buka Surat</button>
+</section>
+
+<!-- ================= SURAT ================= -->
+<section id="surat" class="section">
+  <div class="surat-box">
+    <div class="surat-title">Untuk Kamu 💕</div>
+    <div id="typedText"></div>
+  </div>
+  <button class="btn" id="btnKeGaleri" style="display:none;">Lihat Kenangan Kita →</button>
+</section>
+
+<!-- ================= GALERI ================= -->
+<section id="galeri" class="section">
+  <div class="galeri-title">Galeri Kenangan Kita 📸</div>
+  <div class="carousel" id="carouselWrap"></div>
+  <button class="btn lanjut-btn" id="btnKeAkhir">Lanjut →</button>
+</section>
+
+<!-- ================= INTERAKSI AKHIR ================= -->
+<section id="akhir" class="section">
+  <div class="pertanyaan">Apakah kamu mau memaafkan aku?</div>
+  <div class="tombol-area">
+    <button id="btnYa">Ya 💖</button>
+    <button id="btnTidak">Tidak</button>
+  </div>
+  <footer>Dibuat dengan sepenuh hati 🌷</footer>
+</section>
+
+<!-- ================= POPUP BAHAGIA ================= -->
+<div id="popup">
+  <div class="popup-box">
+    <div class="emoji">🎉💗</div>
+    <h2>Yeayy!</h2>
+    <p>Makasih udah mau maafin aku. Aku janji akan jadi lebih baik lagi. Aku sayang kamu! buka block wa nya dong cantik❤️</p>
+    <button class="btn" id="btnTutupPopup" style="margin-top:16px;">Tutup</button>
+  </div>
+</div>
+
+<canvas id="confettiCanvas"></canvas>
+
+<script>
+/* =========================================================
+   0. DATA (edit di sini — pengganti array PHP)
+   ========================================================= */
+
+// GANTI password di sini (huruf besar/kecil dianggap beda)
+const SANDI_WEB = "16112025";
+
+const suratMaaf = "Hai sayangggg maafin aku tau kamu capek dengan semua tingkah aku selama ini, byy aku sadar kalo kalo hubungan itu ga cuma soal cinta dan setia. kamu benar byy, maaf kalo kamu rasa aku kurang menghargai kamu. byy aku benar-benar sayang banget ama kamu, tapi aku masih awam soal pacaran ini, kebiasaan cuek aku ke semua orang masih sering kebawa dan aku terapkan ke kamu. byy aku minta maaf sedalam dalamnya, aku mau kamu jadi pasangan aku selamanya.";
+
+// Simpan foto di folder /images, sesuaikan nama file di bawah
+const galeri = [
+  { src: "images/kenangan1.jpg", caption: "Waktu pertama kita jalan bareng, lucu banget pas aku samper kamu, kamu teriak 'MAMAA SI FAJAR DATANG' gemes banget bau hokben 🌸", tanggal: "25 Desember 2025" },
+  { src: "images/kenangan2.jpg", caption: "kita nonton koser barengggg, seruuu bangetttt dikeramaian bersama orang tersayang. kita nonton feast dan nyanyi NINA bareng", tanggal: "27 Deember 2025" },
+  { src: "images/kenangan3.jpg", caption: "Kita joging bareng untuk pertama kalinyaa, mampir ke masjid agung dulu eh ditanya kang cuangki itu siapanya aku jawab istri ehhehe", tanggal: "17 Januari 2026" },
+  { src: "images/kenangan4.jpg", caption: "Nongkii donggggg bareng my favorite person di teman nongkrong asikkkk banget", tanggal: "7 Februari 2026" },
+  { src: "images/kenangan5.jpg", caption: "Kitaaaa bukberrr di suta, seru bangettt. makanan kita telatt datang coba iiiii ngeselin bangettt ya", tanggal: "18 Maret 2026" },
+  { src: "images/kenangan6.jpg", caption: "bayangkan aku dateng ke tengah-tengah keluargaa kamuu, iiii maluuuuu tapi seruu, aku seneng banget disambut hangat dan uwa kamu bilang kalo aku calon mantu mama kamu", tanggal: "20 Maret 2026" },
+  { src: "images/kenangan7.jpg", caption: "anterin mybaby ke bank bri abis itu nongkiii di kapulsoo. pulangnya mam seblak teh susii barengg", tanggal: "25 maret 2026" },
+  { src: "images/kenangan8.jpg", caption: "aku nyamperin ulaa cfd, lucu pas aku samperin ula terus ula lagi pilihin baju, dan liat aku ula langsung lari dan bilang suami saya samper", tanggal: "5 April 2026" },
+  { src: "images/kenangan9.jpg", caption: "ini kitaa hampir seharian full, ula main kerumah aku terus kita main ke suta disana kita fotobooth walaupun ula pasti kesel karna disana ula nangis dibentak fajarr uhuhu maaf yaa. oke abis itu kitaa naik krl dan itu pertama kalinya buat ulaa dan ajan yang temeninn. lucu bangetttt, abis itu pulangnya kita mampir kerumah teteh aku dan pulang kerumah kamu dan mam nasi goreng bareng.", tanggal: "2 Mei 2026" },
+  { src: "images/kenangan10.jpg", caption: "bayangkannnn ula nangisi minta izin buat ke curug, akhirnya diizinin. seru banget nyurug date bareng ulaa, mam popmie bareng, minum susu bareng.", tanggal: "1 juni 2026" },
+  { src: "images/kenangan11.jpg", caption: "Sutttt ini ilegal wkwkkwk, seru banget walau cuma semenit. kita motoran pagi pagiii di pandeglang", tanggal: "21 Juni 2026" },
+  { src: "images/kenangan12.jpg", caption: "Aku main kerumah ula, ula kesel tadinya karna aku ragu buat main. tapi akhirnya aku gassspoll kerumah ula karna kangen. dirumah ula kita main ama nadia, ngobrol, dan ngerencanain buat besookk", tanggal: "4 Juli 2026" },
+  { src: "images/kenangan13.jpg", caption: "ini semalamnya udah direncanain, kita ke kampung domba pagi-pagi liat sunrise cantik banget secantikkk ula tersayang. abis itu kita cfd ke alunalun disana kitaa main, dan aku beliin bunga buat ulaa walaupun ga inisiatiff ehehehe", tanggal: "5 juni 2026" },
+];
+
+/* =========================================================
+   1. PASSWORD GATE
+   ========================================================= */
+const loginForm = document.getElementById("loginForm");
+const sandiInput = document.getElementById("sandiInput");
+const loginError = document.getElementById("loginError");
+
+loginForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (sandiInput.value === SANDI_WEB) {
+    loginError.classList.remove("show");
+    goTo("cover");
+  } else {
+    loginError.classList.add("show");
+    sandiInput.value = "";
+    sandiInput.focus();
+  }
+});
+
+/* =========================================================
+   2. RENDER GALERI DARI DATA JS
+   ========================================================= */
+const carouselWrap = document.getElementById("carouselWrap");
+galeri.forEach(item => {
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `
+    <img src="${item.src}" alt="${item.caption}"
+         onerror="this.style.display='flex'; this.style.alignItems='center'; this.style.justifyContent='center'; this.alt='📷';">
+    <div class="card-caption">
+      <div class="tgl">${item.tanggal}</div>
+      <div class="cap">${item.caption}</div>
+    </div>
+  `;
+  carouselWrap.appendChild(card);
+});
+
+/* =========================================================
+   3. FALLING HEARTS / PETALS BACKGROUND
+   ========================================================= */
+(function initFalling(){
+  const symbols = ["🌸","❤️","💗","🌷"];
+  const total = 14;
+  for(let i=0;i<total;i++){
+    const el = document.createElement("div");
+    el.className = "falling";
+    el.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+    el.style.left = Math.random()*100 + "vw";
+    el.style.fontSize = (14 + Math.random()*16) + "px";
+    const duration = 6 + Math.random()*8;
+    el.style.animationDuration = duration + "s";
+    el.style.animationDelay = (Math.random()*8) + "s";
+    document.body.appendChild(el);
+  }
+})();
+
+/* =========================================================
+   4. NAVIGASI ANTAR SECTION
+   ========================================================= */
+function goTo(sectionId){
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  document.getElementById(sectionId).classList.add("active");
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+/* =========================================================
+   5. BUKA SURAT -> PLAY MUSIC + TYPING EFFECT
+   ========================================================= */
+const bgMusic = document.getElementById("bgMusic");
+const btnBuka = document.getElementById("btnBuka");
+const envelopeBtn = document.getElementById("envelopeBtn");
+
+function bukaSurat(){
+  bgMusic.volume = 0.6;
+  bgMusic.play().catch(()=>{ /* fallback jika browser tetap memblokir */ });
+
+  goTo("surat");
+  startTyping();
+}
+
+btnBuka.addEventListener("click", bukaSurat);
+envelopeBtn.addEventListener("click", bukaSurat);
+
+const typedTextEl = document.getElementById("typedText");
+const btnKeGaleri = document.getElementById("btnKeGaleri");
+let typingStarted = false;
+
+function startTyping(){
+  if(typingStarted) return;
+  typingStarted = true;
+
+  let i = 0;
+  typedTextEl.innerHTML = '<span class="cursor">&nbsp;</span>';
+  const speed = 35;
+
+  function tick(){
+    if(i < suratMaaf.length){
+      const shown = suratMaaf.substring(0, i+1);
+      typedTextEl.innerHTML = shown.replace(/\n/g,"<br>") + '<span class="cursor">&nbsp;</span>';
+      i++;
+      setTimeout(tick, speed);
+    } else {
+      typedTextEl.innerHTML = suratMaaf.replace(/\n/g,"<br>");
+      btnKeGaleri.style.display = "inline-block";
+    }
+  }
+  tick();
+}
+
+document.getElementById("btnKeGaleri").addEventListener("click", () => goTo("galeri"));
+document.getElementById("btnKeAkhir").addEventListener("click", () => goTo("akhir"));
+
+/* =========================================================
+   6. TOMBOL "TIDAK" MENGHINDAR
+   ========================================================= */
+const btnTidak = document.getElementById("btnTidak");
+const tombolArea = document.querySelector(".tombol-area");
+let dodgeCount = 0;
+
+function dodgeTidak(){
+  const areaRect = tombolArea.getBoundingClientRect();
+  const btnRect = btnTidak.getBoundingClientRect();
+
+  const maxX = areaRect.width - btnRect.width;
+  const maxY = areaRect.height - btnRect.height;
+
+  const randX = Math.max(0, Math.random() * maxX);
+  const randY = Math.max(0, Math.random() * maxY);
+
+  btnTidak.classList.add("escaping");
+  btnTidak.style.left = randX + "px";
+  btnTidak.style.top = randY + "px";
+
+  dodgeCount++;
+  const scale = Math.max(0.5, 1 - dodgeCount * 0.08);
+  const opacity = Math.max(0.35, 1 - dodgeCount * 0.08);
+  btnTidak.style.transform = `scale(${scale})`;
+  btnTidak.style.opacity = opacity;
+}
+
+tombolArea.addEventListener("mousemove", (e) => {
+  const btnRect = btnTidak.getBoundingClientRect();
+  const cx = btnRect.left + btnRect.width/2;
+  const cy = btnRect.top + btnRect.height/2;
+  const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
+  if(dist < 70){ dodgeTidak(); }
+});
+
+btnTidak.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  dodgeTidak();
+}, {passive:false});
+
+btnTidak.addEventListener("click", (e) => {
+  e.preventDefault();
+  dodgeTidak();
+});
+
+/* =========================================================
+   7. TOMBOL "YA" -> POPUP + CONFETTI
+   ========================================================= */
+const btnYa = document.getElementById("btnYa");
+const popup = document.getElementById("popup");
+const btnTutupPopup = document.getElementById("btnTutupPopup");
+
+btnYa.addEventListener("click", () => {
+  popup.classList.add("show");
+  launchConfetti();
+});
+
+btnTutupPopup.addEventListener("click", () => {
+  popup.classList.remove("show");
+});
+
+/* =========================================================
+   8. CONFETTI SEDERHANA (Vanilla JS Canvas)
+   ========================================================= */
+const canvas = document.getElementById("confettiCanvas");
+const ctx = canvas.getContext("2d");
+let confettiPieces = [];
+let confettiAnimId = null;
+
+function resizeCanvas(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+const confettiColors = ["#e0577e", "#ffb6c9", "#ff8fab", "#fff0f3", "#c23b60"];
+
+function launchConfetti(){
+  confettiPieces = [];
+  const count = 120;
+  for(let i=0;i<count;i++){
+    confettiPieces.push({
+      x: Math.random()*canvas.width,
+      y: -20 - Math.random()*canvas.height*0.5,
+      w: 6 + Math.random()*6,
+      h: 10 + Math.random()*8,
+      color: confettiColors[Math.floor(Math.random()*confettiColors.length)],
+      speedY: 2 + Math.random()*3,
+      speedX: (Math.random()-0.5)*2,
+      rotation: Math.random()*360,
+      rotSpeed: (Math.random()-0.5)*8,
+    });
+  }
+  if(confettiAnimId) cancelAnimationFrame(confettiAnimId);
+  animateConfetti();
+
+  setTimeout(() => {
+    cancelAnimationFrame(confettiAnimId);
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+  }, 4500);
+}
+
+function animateConfetti(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  confettiPieces.forEach(p => {
+    p.y += p.speedY;
+    p.x += p.speedX;
+    p.rotation += p.rotSpeed;
+
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rotation * Math.PI/180);
+    ctx.fillStyle = p.color;
+    ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+    ctx.restore();
+  });
+
+  confettiPieces = confettiPieces.filter(p => p.y < canvas.height + 30);
+  confettiAnimId = requestAnimationFrame(animateConfetti);
+}
+</script>
+
+</body>
+</html>
